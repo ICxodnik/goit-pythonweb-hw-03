@@ -10,6 +10,5 @@ RUN pip install --no-cache-dir -r /web_app/requirements.txt
 COPY . /web_app/
 
 EXPOSE 3000
-EXPOSE 6000
 
 CMD ["python", "server.py"]

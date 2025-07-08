@@ -3,7 +3,6 @@ import logging
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 from multiprocessing import Process
-import websockets
 from datetime import datetime
 import json
 import os

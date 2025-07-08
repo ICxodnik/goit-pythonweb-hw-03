@@ -32,6 +32,29 @@ class HttpHandler(BaseHTTPRequestHandler):
             self.send_static_file(parsed_url.path[1:])
         else:
             self.send_html_file("error.html", 404)
+
+    def do_POST(self):
+        content_length = int(self.headers["Content-Length"])
+        post_data = self.rfile.read(content_length)
+        parsed_data = parse_qs(post_data.decode("utf-8"))
+        username = parsed_data.get("username")[0]
+        message = parsed_data.get("message")[0]
+
+        message_data = {
+            "username": username,
+            "message": message,
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"),
+        }
+
+        self.save_message_to_json(message_data)
+
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+        file_path = os.path.join(BASE_DIR, "pages", "message_sent.html")
+        with open(file_path, "rb") as file:
+            self.wfile.write(file.read())
+
     def send_html_file(self, filename, status=200):
         self.send_response(status)
         self.send_header("Content-type", "text/html")
@@ -55,6 +78,40 @@ class HttpHandler(BaseHTTPRequestHandler):
                 self.wfile.write(file.read())
         except FileNotFoundError:
             self.send_html_file("error.html", 404)
+
+    def save_message_to_json(self, message_data):
+        try:
+            with open(DATA_FILE, "r", encoding="utf-8") as file:
+                data = json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            data = {}
+
+        data[message_data["timestamp"]] = {
+            "username": message_data["username"],
+            "message": message_data["message"],
+        }
+
+        with open(DATA_FILE, "w", encoding="utf-8") as file:
+            json.dump(data, file, indent=4, ensure_ascii=False)
+
+    def show_messages(self):
+        env = Environment(loader=FileSystemLoader("pages"))
+        template = env.get_template("messages.html")
+
+        try:
+            with open(DATA_FILE, "r") as file:
+                messages = json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            messages = {}
+
+        logging.info(f"Loaded {len(messages)} messages from {DATA_FILE}")
+
+        html_content = template.render(messages=messages)
+
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+        self.wfile.write(html_content.encode("utf-8"))
 
 def run_http_server():
     server_address = ("", 3000)

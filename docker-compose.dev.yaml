@@ -7,3 +7,5 @@ services:
       - '3000:3000'
     volumes:
       - .:/web_app
+    command: watchmedo auto-restart --directory=. --pattern=*.py --recursive -- python server.py
+

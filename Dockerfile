@@ -11,4 +11,4 @@ COPY . /web_app/
 
 EXPOSE 3000
 
-CMD ["python", "server.py"]
+CMD ["watchmedo", "auto-restart", "--directory=.", "--pattern=*.py", "--recursive", "python", "server.py"]

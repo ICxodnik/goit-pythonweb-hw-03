@@ -17,14 +17,42 @@ if not os.path.exists("storage"):
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+COURSE_TEXTS = {
+    "stress-management": "stress management.",
+    "cognitive-therapy": "cognitive therapy.",
+    "interpersonal-therapy": "interpersonal therapy."
+}
+
+def get_course_context(query_params):
+    course = None
+    course_text = ""
+    if "course" in query_params and query_params["course"]:
+        course = query_params["course"][0]
+        course_text = "Hello, I’m interested in " + COURSE_TEXTS.get(course, "")
+    return course, course_text
 
 class HttpHandler(BaseHTTPRequestHandler):
+    def render_template(self, template_name, **context):
+        env = Environment(loader=FileSystemLoader("pages"))
+        template = env.get_template(template_name)
+        html_content = template.render(**context)
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+        self.wfile.write(html_content.encode("utf-8"))
+
     def do_GET(self):
         parsed_url = urlparse(self.path)
         if parsed_url.path == "/":
-            self.send_html_file("index.html")
+            self.render_template("index.html")
         elif parsed_url.path == "/message":
-            self.send_html_file("message.html")
+            query_params = parse_qs(parsed_url.query)
+            course, course_text = get_course_context(query_params)
+            self.render_template(
+                "message.html",
+                course=course,
+                course_text=course_text
+            )
         elif parsed_url.path == "/read":
             self.show_messages()
         elif parsed_url.path.startswith("/static/"):

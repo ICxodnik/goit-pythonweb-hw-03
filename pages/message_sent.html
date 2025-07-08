@@ -1,44 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Message Sent</title>
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
-            crossorigin="anonymous"
-        />
-        <link rel="stylesheet" href="/static/style.css" />
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Message Sent</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .hover-scale {
+            transition: transform 0.3s ease;
+        }
+    
+        .hover-scale:hover {
+            transform: scale(1.03);
+        }
+    </style>
     </head>
-    <body>
-        <header>
-            <nav class="navbar navbar-expand navbar-dark bg-dark" aria-label="Second navbar example">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#">
-                        <img src="/static/logo.svg" alt="logo" width="40" height="40" />
-                    </a>
-                    <div class="collapse navbar-collapse" id="navbarsExample02">
-                        <ul class="navbar-nav me-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" aria-current="page" href="/">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/message">Send message</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/read">Data</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
-        <div class="d-flex justify-content-center align-items-center vh-100 bg-light">
-            <div class="text-center p-4 border rounded bg-white shadow">
-                <h1 class="text-primary">Message sent!</h1>
+
+<body class="bg-light">
+    <header class="bg-white border-bottom shadow-sm mb-4">
+        <nav class="navbar navbar-expand-lg container">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="/static/logo.svg" alt="logo" width="40" height="40" class="me-2" />
+                <strong>MindCare</strong>
+            </a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/message">Send message</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/read">Data</a></li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container text-center py-4">
+            <h1 class="display-5 fw-semibold text-success">Message Sent Successfully</h1>
+            <p class="text-muted">Thank you for reaching out. We will respond shortly.</p>
+        </div>
+    </header>
+<main class="container d-flex justify-content-center align-items-center pb-5">
+    <div class="card shadow p-4 text-center" style="max-width: 500px;">
+        <div class="card-body">
+                <h2 class="card-title text-primary mb-3">Your message has been sent!</h2>
+                <p class="card-text text-muted">
+                    We're grateful for your interest. If you'd like to explore our therapy sessions, feel free to go
+                    back.
+                </p>
+                <a href="/" class="btn btn-outline-primary mt-3">Back to Home</a>
             </div>
         </div>
-    </body>
+    </main>
+</body>
+
 </html>
